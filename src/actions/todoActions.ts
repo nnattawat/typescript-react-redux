@@ -10,11 +10,16 @@ export interface Todo {
 };
 
 export interface FetchTodosAction {
-  type: number;
+  type: ActionTypes.FETCH_TODOS;
   payload: Todo[]
 };
 export interface LoadTodosAction {
-  type: number;
+  type: ActionTypes.LOAD_TODOS;
+};
+
+export interface DeleteTodoAction {
+  type: ActionTypes.DELETE_TODO;
+  id: number;
 };
 
 export const fetchTodos = () => {
@@ -29,3 +34,8 @@ export const fetchTodos = () => {
     });
   };
 };
+
+export const deleteTodo = (id: number): DeleteTodoAction => ({
+  type: ActionTypes.DELETE_TODO,
+  id
+});

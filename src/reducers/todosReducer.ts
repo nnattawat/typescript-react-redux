@@ -1,7 +1,7 @@
-import { Todo, FetchTodosAction } from '../actions';
 import { ActionTypes } from '../actions/actionTypes';
+import { Todo, DeleteTodoAction, LoadTodosAction, FetchTodosAction } from '../actions/todoActions';
 
-type todoActions = FetchTodosAction;// | LoadTodosAction;
+type todoActions = FetchTodosAction | LoadTodosAction | DeleteTodoAction;
 
 export interface TodoState {
   todos: Todo[],
@@ -10,7 +10,7 @@ export interface TodoState {
 
 export const todosReducer = (
   state: TodoState = { todos: [], apiStatus: 'pending' },
-  action: todoActions 
+  action: todoActions
 ) => {
   switch(action.type) {
     case ActionTypes.LOAD_TODOS:
@@ -24,6 +24,11 @@ export const todosReducer = (
         todos: action.payload,
         apiStatus: 'completed'
       };
+    case ActionTypes.DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.id)
+      }
     default:
       return state;
   }
