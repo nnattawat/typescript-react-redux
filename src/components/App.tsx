@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchTodos, deleteTodo } from '../actions/todoActions';
 import { StoreState,  } from '../reducers';
-import { TodoState } from '../reducers/todosReducer';
 
-interface AppProps {
-  todos: TodoState,
-  fetchTodos: Function;
-  deleteTodo: typeof deleteTodo;
-};
+export function App(): JSX.Element {
+  const todos = useSelector((state: StoreState) => state.todos);
+  const dispatch = useDispatch();
 
-function _App({ todos, fetchTodos, deleteTodo }: AppProps): JSX.Element {
   useEffect(() => {
     if (todos.apiStatus === 'pending') {
-      fetchTodos();
+      dispatch(fetchTodos());
     }
   });
 
@@ -22,7 +18,7 @@ function _App({ todos, fetchTodos, deleteTodo }: AppProps): JSX.Element {
       {todos.apiStatus === 'loading' && <p>Loading....</p>}
       {todos.todos.map(todo => (
         <p key={todo.id}>
-          {todo.title} | <b>{todo.completed ? 'completed' : 'pending'}</b> | <button onClick={() => deleteTodo(todo.id)}>
+          {todo.title} | <b>{todo.completed ? 'completed' : 'pending'}</b> | <button onClick={() => dispatch(deleteTodo(todo.id))}>
             Delete
           </button>
         </p>
@@ -30,14 +26,3 @@ function _App({ todos, fetchTodos, deleteTodo }: AppProps): JSX.Element {
     </div>
   );
 }
-
-const mapStateToProps = (state: StoreState) => ({
-  todos: state.todos
-});
-
-const mapActionToProps = { fetchTodos, deleteTodo };
-
-export const App = connect(
-  mapStateToProps,
-  mapActionToProps
-)(_App);

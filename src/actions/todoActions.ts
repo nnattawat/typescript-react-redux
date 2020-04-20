@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
 
 const TODO_URL = 'https://jsonplaceholder.typicode.com/todos';
+
 export interface Todo {
   id: number;
   title: string;
@@ -13,6 +14,7 @@ export interface FetchTodosAction {
   type: ActionTypes.FETCH_TODOS;
   payload: Todo[]
 };
+
 export interface LoadTodosAction {
   type: ActionTypes.LOAD_TODOS;
 };
